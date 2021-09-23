@@ -13,6 +13,10 @@
 		945BDC4B26FC8C1200F53841 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC4926FC8C1200F53841 /* Main.storyboard */; };
 		945BDC4D26FC8C1300F53841 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC4C26FC8C1300F53841 /* Assets.xcassets */; };
 		945BDC5026FC8C1300F53841 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC4E26FC8C1300F53841 /* LaunchScreen.storyboard */; };
+		945BDC5C26FC8F1D00F53841 /* MyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945BDC5A26FC8F1D00F53841 /* MyTableViewCell.swift */; };
+		945BDC5D26FC8F1D00F53841 /* MyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC5B26FC8F1D00F53841 /* MyTableViewCell.xib */; };
+		945BDC6226FC8F3700F53841 /* BotTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945BDC6026FC8F3700F53841 /* BotTableViewCell.swift */; };
+		945BDC6326FC8F3700F53841 /* BotTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC6126FC8F3700F53841 /* BotTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		945BDC4C26FC8C1300F53841 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		945BDC4F26FC8C1300F53841 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		945BDC5126FC8C1300F53841 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		945BDC5A26FC8F1D00F53841 /* MyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCell.swift; sourceTree = "<group>"; };
+		945BDC5B26FC8F1D00F53841 /* MyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyTableViewCell.xib; sourceTree = "<group>"; };
+		945BDC6026FC8F3700F53841 /* BotTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotTableViewCell.swift; sourceTree = "<group>"; };
+		945BDC6126FC8F3700F53841 /* BotTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BotTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,11 +68,23 @@
 				945BDC4526FC8C1200F53841 /* SceneDelegate.swift */,
 				945BDC4726FC8C1200F53841 /* ViewController.swift */,
 				945BDC4926FC8C1200F53841 /* Main.storyboard */,
+				945BDC5726FC8EDA00F53841 /* CustomCell */,
 				945BDC4C26FC8C1300F53841 /* Assets.xcassets */,
 				945BDC4E26FC8C1300F53841 /* LaunchScreen.storyboard */,
 				945BDC5126FC8C1300F53841 /* Info.plist */,
 			);
 			path = Emotraction;
+			sourceTree = "<group>";
+		};
+		945BDC5726FC8EDA00F53841 /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				945BDC5A26FC8F1D00F53841 /* MyTableViewCell.swift */,
+				945BDC5B26FC8F1D00F53841 /* MyTableViewCell.xib */,
+				945BDC6026FC8F3700F53841 /* BotTableViewCell.swift */,
+				945BDC6126FC8F3700F53841 /* BotTableViewCell.xib */,
+			);
+			path = CustomCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,6 +146,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				945BDC5026FC8C1300F53841 /* LaunchScreen.storyboard in Resources */,
+				945BDC5D26FC8F1D00F53841 /* MyTableViewCell.xib in Resources */,
+				945BDC6326FC8F3700F53841 /* BotTableViewCell.xib in Resources */,
 				945BDC4D26FC8C1300F53841 /* Assets.xcassets in Resources */,
 				945BDC4B26FC8C1200F53841 /* Main.storyboard in Resources */,
 			);
@@ -139,6 +161,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				945BDC4826FC8C1200F53841 /* ViewController.swift in Sources */,
+				945BDC5C26FC8F1D00F53841 /* MyTableViewCell.swift in Sources */,
+				945BDC6226FC8F3700F53841 /* BotTableViewCell.swift in Sources */,
 				945BDC4426FC8C1200F53841 /* AppDelegate.swift in Sources */,
 				945BDC4626FC8C1200F53841 /* SceneDelegate.swift in Sources */,
 			);
@@ -287,6 +311,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 56M5N9M2PX;
@@ -295,8 +320,10 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,6 +342,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 56M5N9M2PX;
@@ -323,8 +351,10 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

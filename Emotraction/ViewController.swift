@@ -6,17 +6,130 @@
 //
 
 import UIKit
+import Speech
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var messageView: UITextView!
+    //MARK: - OUTLET
+    @IBOutlet weak var messageView: UIView!
+    @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var chatTableView: UITableView!
+    @IBOutlet weak var sendButton: UIButton!
+    
+    
+    @IBOutlet weak var stateLabel: UILabel!
+    @IBOutlet weak var AppleButton: UIButton!
+    
+    //MARK: - Local Properties
     var userList = [String]()
     var botList = [String]()
-    
+    //temp data
     let randomEmoij = ["😀","😆","🙁","😡","🥶","😱","😢","😵‍💫","😐"]
+    
+    
+    //MARK: - apple Speech to Text
+    let audioEngine = AVAudioEngine()
+    let speechReconizer: SFSpeechRecognizer? = SFSpeechRecognizer(locale: Locale(identifier: "ko_KR"))
+    let request = SFSpeechAudioBufferRecognitionRequest()
+    var task: SFSpeechRecognitionTask!
+    var isStart: Bool = false
+    
+    
+    @IBAction func StartOrStop(_ sender: Any) {
+        isStart = !isStart
+        
+        if isStart {
+            stateLabel.text = "Recording..."
+            stateLabel.textColor = .systemRed
+            AppleButton.tintColor = .systemRed
+            startSpeechRecognization()
+        } else {
+            stateLabel.text = "Waiting..."
+            stateLabel.textColor = .black
+            AppleButton.tintColor = .black
+            
+            cancelSpeechRecognization()
+        }
+    }
+    
+    func requestPermission() {
+        self.AppleButton.isEnabled = false
+        SFSpeechRecognizer.requestAuthorization { authState in
+            OperationQueue.main.addOperation {
+                if authState == .authorized {
+                    print("ACCEPTED")
+                    self.AppleButton.isEnabled = true
+                } else if authState == .denied {
+                    self.alertView(message: "User denied the permission")
+                } else if authState == .notDetermined {
+                    self.alertView(message: "In user phone there is no speech recognization")
+                } else if authState == .restricted {
+                    self.alertView(message: "User has been restricted for using the speech recognization")
+                }
+            }
+        }
+    }
+    
+    func startSpeechRecognization() {
+        let node = audioEngine.inputNode
+        let recordingFormat = node.outputFormat(forBus: 0)
+        
+        node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
+            self.request.append(buffer)
+        }
+        
+        audioEngine.prepare()
+        do {
+            try audioEngine.start()
+        } catch let error {
+            alertView(message: "Error comes here for starting the audio listner = \(error.localizedDescription)")
+        }
+        
+        guard let myRecognization = SFSpeechRecognizer() else {
+            self.alertView(message: "Recognization is not allow on your local")
+            return
+        }
+        
+        if !myRecognization.isAvailable {
+            self.alertView(message: "Recognization is free right now, Please try agian after some time.")
+        }
+        
+        task = speechReconizer?.recognitionTask(with: request, resultHandler: { response, error in
+            guard let response = response else {
+                if error != nil {
+                    //self.alertView(message: error.debugDescription)
+                } else {
+                    //self.alertView(message: "Problem in giving the response")
+                }
+                return
+            }
+            let message = response.bestTranscription.formattedString
+            print("Message: \(message)")
+            self.messageLabel.text = message
+        })
+    }
+    
+    func cancelSpeechRecognization() {
+        print(#function)
+        task.finish()
+        task.cancel()
+        task = nil
+        request.endAudio()
+        audioEngine.stop()
+        audioEngine.inputNode.removeTap(onBus: 0)
+    }
+    
+    
+    
+    
+    //alertView
+    func alertView(message: String) {
+        let controller = UIAlertController(title: "Error occured...!", message: message, preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            
+        }))
+        self.present(controller, animated: true, completion: nil)
+    }
     
     
     //테이블뷰를 맨 마지막으로 스크롤하는 함수
@@ -31,12 +144,14 @@ class ViewController: UIViewController {
     //메시지를 서버로 보내고, 감정응답을 받는다.
     @IBAction func sendMessage(_ sender: Any) {
         
-        guard let message = messageView.text, message.count > 0 else {
+        guard let message = messageLabel.text, message.count > 0, message != "아무 말이나 해보세요" else {
             return
         }
         
+        StartOrStop(self)
+        
         userList.append(message)
-        messageView.text = nil
+        messageLabel.text = "아무 말이나 해보세요"
         
         //서버로부터 받은 감정처리하기 (일단은 랜덤으로 감정 보여주기)
         let idx = Int.random(in: 0..<randomEmoij.count)
@@ -46,46 +161,20 @@ class ViewController: UIViewController {
         scrollToBottom()
     }
     
-    //MARK: - keyboard observer
-    var willShowToken: NSObjectProtocol?
-    var willHideToken: NSObjectProtocol?
-    
-    deinit {
-        if let token = willShowToken {
-            NotificationCenter.default.removeObserver(token)
-        }
-        
-        if let token = willHideToken {
-            NotificationCenter.default.removeObserver(token)
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "채팅봇"
+        messageView.layer.cornerRadius = 10
         
+        AppleButton.tintColor = .black
+        stateLabel.text = "Waiting..."
         
-        willShowToken = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main, using: { [weak self] noti in
-            
-            if let frame = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-                let height = frame.cgRectValue.height
-                
-                
-                self?.bottomConstraint.constant = height
-                UIView.animate(withDuration: 0.3) {
-                    self?.view.layoutIfNeeded()
-                }
-                self?.scrollToBottom()
-            }
-        })
+        sendButton.backgroundColor = .systemOrange
+        sendButton.layer.cornerRadius = 5
+        sendButton.tintColor = .white
         
-        willHideToken = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main, using: { [weak self] noti in
-        
-            self?.bottomConstraint.constant = 0
-            UIView.animate(withDuration: 0.3) {
-                self?.view.layoutIfNeeded()
-            }
-        })
+        requestPermission()
 
         
         //tableView setting

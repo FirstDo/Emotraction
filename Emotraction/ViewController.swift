@@ -148,7 +148,11 @@ class ViewController: UIViewController {
             return
         }
         
-        StartOrStop(self)
+        if isStart == true {
+            StartOrStop(self)
+        }
+        
+        
         
         userList.append(message)
         messageLabel.text = "아무 말이나 해보세요"

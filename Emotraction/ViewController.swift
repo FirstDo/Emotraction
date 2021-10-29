@@ -8,6 +8,14 @@
 import UIKit
 import Speech
 
+struct PostData: Codable {
+    let text: String
+}
+
+struct EmotionData: Codable {
+    let emotion: String
+}
+
 class ViewController: UIViewController {
 
     //MARK: - OUTLET
@@ -33,6 +41,7 @@ class ViewController: UIViewController {
     let request = SFSpeechAudioBufferRecognitionRequest()
     var task: SFSpeechRecognitionTask!
     var isStart: Bool = false
+
     
     
     @IBAction func StartOrStop(_ sender: Any) {
@@ -157,6 +166,52 @@ class ViewController: UIViewController {
         userList.append(message)
         messageLabel.text = "아무 말이나 해보세요"
         
+        //서버 통신
+        print("서버통신")
+        let address = "http://192.168.0.17:5000/text"
+        guard let url = URL(string: address) else {fatalError("InvalidURL")}
+        
+        var request = URLRequest(url: url)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        
+        
+        let messageData = PostData(text: message)
+        let d = try? JSONEncoder().encode(messageData)
+        
+        request.httpBody = d
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("task ERROR")
+                print(error.localizedDescription)
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("httpResonse ERROR")
+                return
+            }
+            
+            guard (200...299).contains(httpResponse.statusCode) else {
+                print(httpResponse.statusCode,"error")
+                return
+            }
+                        
+            //서버로 부터 받은 감정값 파싱
+            if let data = data {
+                do {
+                    let t = try JSONDecoder().decode(EmotionData.self, from: data)
+                    print("서버에서 응답을 받았습니다\n서버에서 응답을 받았습니다\n서버에서 응답을 받았습니다\n서버에서 응답을 받았습니다\n서버에서 응답을 받았습니다\n")
+                    print(t)
+                } catch let error {
+                    print("data parsing error")
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        task.resume()
+        
         //서버로부터 받은 감정처리하기 (일단은 랜덤으로 감정 보여주기)
         let idx = Int.random(in: 0..<randomEmoij.count)
         let emotion = randomEmoij[idx]
@@ -164,7 +219,6 @@ class ViewController: UIViewController {
         chatTableView.reloadData()
         scrollToBottom()
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -195,7 +249,6 @@ class ViewController: UIViewController {
         
         // Do any additional setup after loading the view.
     }
-
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {

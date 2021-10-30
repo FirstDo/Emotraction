@@ -217,8 +217,10 @@ class ViewController: UIViewController {
                         emotion = "😵‍💫"
                     }
                     self.botList.append(emotion)
-                    self.chatTableView.reloadData()
-                    self.scrollToBottom()
+                    DispatchQueue.main.async {
+                        self.chatTableView.reloadData()
+                        self.scrollToBottom()
+                    }
                 } catch let error {
                     print("data parsing Error",error.localizedDescription)
                 }

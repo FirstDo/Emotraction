@@ -31,8 +31,6 @@ class ViewController: UIViewController {
     //MARK: - Local Properties
     var userList = [String]()
     var botList = [String]()
-    //temp data
-    let randomEmoij = ["😀","😆","🙁","😡","🥶","😱","😢","😵‍💫","😐"]
     
     
     //MARK: - apple Speech to Text
@@ -183,41 +181,50 @@ class ViewController: UIViewController {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("task ERROR")
-                print(error.localizedDescription)
-                return
+                fatalError("network ERROR \(error.localizedDescription)")
             }
             
             guard let httpResponse = response as? HTTPURLResponse else {
-                print("httpResonse ERROR")
-                return
+                fatalError("httpResonse Error")
             }
             
             guard (200...299).contains(httpResponse.statusCode) else {
-                print(httpResponse.statusCode,"error")
-                return
+                fatalError("httpStatusCode \(httpResponse.statusCode)")
             }
                         
             //서버로 부터 받은 감정값 파싱
             if let data = data {
                 do {
-                    let t = try JSONDecoder().decode(EmotionData.self, from: data)
-                    print("서버에서 응답을 받았습니다\n서버에서 응답을 받았습니다\n서버에서 응답을 받았습니다\n서버에서 응답을 받았습니다\n서버에서 응답을 받았습니다\n")
-                    print(t)
+                    let resultEmotion = try JSONDecoder().decode(EmotionData.self, from: data)
+                    print("서버로부터 추출된 감정은: ", resultEmotion.emotion)
+                    var emotion = ""
+                    switch resultEmotion.emotion {
+                    case "fear":
+                        emotion = "😱"
+                    case "surprised":
+                        emotion = "🤭"
+                    case "angry":
+                        emotion = "😡"
+                    case "sad":
+                        emotion = "😢"
+                    case "neutral":
+                        emotion = "🤨"
+                    case "happy":
+                        emotion = "😆"
+                    case "disgust":
+                        emotion = "🤮"
+                    default:
+                        emotion = "😵‍💫"
+                    }
+                    self.botList.append(emotion)
+                    self.chatTableView.reloadData()
+                    self.scrollToBottom()
                 } catch let error {
-                    print("data parsing error")
-                    print(error.localizedDescription)
+                    print("data parsing Error",error.localizedDescription)
                 }
             }
         }
         task.resume()
-        
-        //서버로부터 받은 감정처리하기 (일단은 랜덤으로 감정 보여주기)
-        let idx = Int.random(in: 0..<randomEmoij.count)
-        let emotion = randomEmoij[idx]
-        botList.append(emotion)
-        chatTableView.reloadData()
-        scrollToBottom()
     }
     
     override func viewDidLoad() {

@@ -159,20 +159,17 @@ class ViewController: UIViewController {
             StartOrStop(self)
         }
         
-        
-        
         userList.append(message)
         messageLabel.text = "아무 말이나 해보세요"
         
         //서버 통신
         print("서버통신")
-        let address = "http://192.168.0.17:5000/text"
+        let address = "http://163.239.28.25:5000/text"
         guard let url = URL(string: address) else {fatalError("InvalidURL")}
         
         var request = URLRequest(url: url)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
-        
         
         let messageData = PostData(text: message)
         let d = try? JSONEncoder().encode(messageData)

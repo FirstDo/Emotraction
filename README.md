@@ -47,8 +47,8 @@ venv-python3 폴더로 이동후
 
 source bin/activate
 
-앱에서 선택한 모델에 맞는 파이썬 코드 실행
-python TestEmotion.py => 7가지 감정분류
-python NewEmotion.py => 3가지 감정분류
+앱에서 선택한 모델에 맞는 파이썬 코드 실행<br>
+python TestEmotion.py => 7가지 감정분류<br>
+python NewEmotion.py => 3가지 감정분류<br>
 
 

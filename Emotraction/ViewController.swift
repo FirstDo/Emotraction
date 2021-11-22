@@ -8,14 +8,6 @@
 import UIKit
 import Speech
 
-struct PostData: Codable {
-    let text: String
-}
-
-struct EmotionData: Codable {
-    let emotion: String
-}
-
 class ViewController: UIViewController {
 
     //MARK: - OUTLET
@@ -24,13 +16,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
     
-    
     @IBOutlet weak var stateLabel: UILabel!
     @IBOutlet weak var AppleButton: UIButton!
     
     //MARK: - Local Properties
     var userList = [String]()
     var botList = [String]()
+    
+    let address = "http://163.239.28.25:5000/text"
+    let modelKey = "ModelKey"
     
     
     //MARK: - apple Speech to Text
@@ -39,7 +33,30 @@ class ViewController: UIViewController {
     let request = SFSpeechAudioBufferRecognitionRequest()
     var task: SFSpeechRecognitionTask!
     var isStart: Bool = false
-
+    
+    @IBAction func SelectModel(_ sender: UISegmentedControl) {
+        let value = sender.selectedSegmentIndex
+        UserDefaults.standard.set(value, forKey: modelKey)
+        
+        var modelName = ""
+        var message = ""
+        
+        switch value {
+        case 0:
+            modelName = "3가지 감정분류 모델"
+            message = "서버에서 NewEmotion.py 를 실행해주세요"
+        case 1:
+            modelName = "7가지 감정분류 모델"
+            message = "서버에서 TestEmotion.py 를 실행해주세요"
+        case 2:
+            modelName = "개발중..."
+            message = "다른 모델을 선택해주세요"
+        default:
+            modelName = "개발중..."
+            message = "다른 모델을 선택해주세요"
+        }
+        alertView(message: message, title: modelName)
+    }
     
     
     @IBAction func StartOrStop(_ sender: Any) {
@@ -54,7 +71,6 @@ class ViewController: UIViewController {
             stateLabel.text = "Waiting..."
             stateLabel.textColor = .black
             AppleButton.tintColor = .black
-            
             cancelSpeechRecognization()
         }
     }
@@ -103,11 +119,6 @@ class ViewController: UIViewController {
         
         task = speechReconizer?.recognitionTask(with: request, resultHandler: { response, error in
             guard let response = response else {
-                if error != nil {
-                    //self.alertView(message: error.debugDescription)
-                } else {
-                    //self.alertView(message: "Problem in giving the response")
-                }
                 return
             }
             let message = response.bestTranscription.formattedString
@@ -126,18 +137,14 @@ class ViewController: UIViewController {
         audioEngine.inputNode.removeTap(onBus: 0)
     }
     
-    
-    
-    
-    //alertView
-    func alertView(message: String) {
-        let controller = UIAlertController(title: "Error occured...!", message: message, preferredStyle: .alert)
+    //Show alertView
+    func alertView(message: String, title: String = "Error occured...!") {
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
         controller.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
             
         }))
         self.present(controller, animated: true, completion: nil)
     }
-    
     
     //테이블뷰를 맨 마지막으로 스크롤하는 함수
     func scrollToBottom() {
@@ -150,80 +157,11 @@ class ViewController: UIViewController {
     
     //메시지를 서버로 보내고, 감정응답을 받는다.
     @IBAction func sendMessage(_ sender: Any) {
-        
         guard let message = messageLabel.text, message.count > 0, message != "아무 말이나 해보세요" else {
+            alertView(message: "보낼 메시지가 없습니다")
             return
         }
-        
-        if isStart == true {
-            StartOrStop(self)
-        }
-        
-        userList.append(message)
-        messageLabel.text = "아무 말이나 해보세요"
-        
-        //서버 통신
-        print("서버통신")
-        let address = "http://163.239.28.25:5000/text"
-        guard let url = URL(string: address) else {fatalError("InvalidURL")}
-        
-        var request = URLRequest(url: url)
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
-        
-        let messageData = PostData(text: message)
-        let d = try? JSONEncoder().encode(messageData)
-        
-        request.httpBody = d
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                fatalError("network ERROR \(error.localizedDescription)")
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                fatalError("httpResonse Error")
-            }
-            
-            guard (200...299).contains(httpResponse.statusCode) else {
-                fatalError("httpStatusCode \(httpResponse.statusCode)")
-            }
-                        
-            //서버로 부터 받은 감정값 파싱
-            if let data = data {
-                do {
-                    let resultEmotion = try JSONDecoder().decode(EmotionData.self, from: data)
-                    print("서버로부터 추출된 감정은: ", resultEmotion.emotion)
-                    var emotion = ""
-                    switch resultEmotion.emotion {
-                    case "fear":
-                        emotion = "😱"
-                    case "surprised":
-                        emotion = "🤭"
-                    case "angry":
-                        emotion = "😡"
-                    case "sad":
-                        emotion = "😢"
-                    case "neutral":
-                        emotion = "🤨"
-                    case "happy":
-                        emotion = "😆"
-                    case "disgust":
-                        emotion = "🤮"
-                    default:
-                        emotion = "😵‍💫"
-                    }
-                    self.botList.append(emotion)
-                    DispatchQueue.main.async {
-                        self.chatTableView.reloadData()
-                        self.scrollToBottom()
-                    }
-                } catch let error {
-                    print("data parsing Error",error.localizedDescription)
-                }
-            }
-        }
-        task.resume()
+        send(message: message)
     }
     
     override func viewDidLoad() {
@@ -240,7 +178,6 @@ class ViewController: UIViewController {
         
         requestPermission()
 
-        
         //tableView setting
         chatTableView.delegate = self
         chatTableView.dataSource = self
@@ -253,10 +190,13 @@ class ViewController: UIViewController {
         chatTableView.register(myCell, forCellReuseIdentifier: "userCell")
         chatTableView.register(botCell, forCellReuseIdentifier: "botCell")
         
-        // Do any additional setup after loading the view.
+        //기본 모델은 3가지 감정분류 모델
+        UserDefaults.standard.set(0, forKey: modelKey)
+        alertView(message: "서버에서 NewEmotion.py를 선택해주세요", title: "3가지 감정분류 모델")
     }
 }
 
+//tableViewDelegate
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return userList.count * 2
@@ -272,7 +212,6 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         //userCell
         if indexPath.row % 2 == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! MyTableViewCell

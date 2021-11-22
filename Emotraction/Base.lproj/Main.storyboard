@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kQg-bj-jde">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kQg-bj-jde">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="uf7-tS-zAn">
-                                <rect key="frame" x="0.0" y="88" width="414" height="638"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="607"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j4s-88-Kuv">
@@ -85,18 +85,31 @@
                                     <constraint firstAttribute="height" constant="170" id="yIe-Zf-7WT"/>
                                 </constraints>
                             </view>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="USk-S1-K2d">
+                                <rect key="frame" x="0.0" y="695" width="414" height="32"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                    <segment title="Third"/>
+                                </segments>
+                                <connections>
+                                    <action selector="SelectModel:" destination="BYZ-38-t0r" eventType="valueChanged" id="1Nw-Og-Elw"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="j4s-88-Kuv" firstAttribute="top" secondItem="uf7-tS-zAn" secondAttribute="bottom" id="37h-aJ-CKr"/>
                             <constraint firstItem="uf7-tS-zAn" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="3jq-37-nkE"/>
                             <constraint firstAttribute="bottom" secondItem="j4s-88-Kuv" secondAttribute="bottom" id="3xc-Fh-xu8"/>
                             <constraint firstItem="j4s-88-Kuv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="5qu-o0-M16"/>
+                            <constraint firstItem="USk-S1-K2d" firstAttribute="top" secondItem="uf7-tS-zAn" secondAttribute="bottom" id="Idb-ke-9Vx"/>
                             <constraint firstItem="uf7-tS-zAn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Qct-jf-p9u"/>
-                            <constraint firstItem="j4s-88-Kuv" firstAttribute="top" secondItem="uf7-tS-zAn" secondAttribute="bottom" id="RKM-50-h9d"/>
                             <constraint firstItem="j4s-88-Kuv" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="SG8-jF-gGB"/>
+                            <constraint firstItem="USk-S1-K2d" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="fVm-hr-zuS"/>
                             <constraint firstItem="uf7-tS-zAn" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="hpz-Wl-DEe"/>
+                            <constraint firstItem="USk-S1-K2d" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="oUv-jP-7xA"/>
+                            <constraint firstItem="j4s-88-Kuv" firstAttribute="top" secondItem="USk-S1-K2d" secondAttribute="bottom" id="uVa-8T-hoL"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zY3-XO-grb"/>

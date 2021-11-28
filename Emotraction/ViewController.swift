@@ -27,7 +27,8 @@ class ViewController: UIViewController {
     
     var messageList = [Message]()
     
-    let address = "http://163.239.28.25:5000/text"
+    let threeAddress = "http://163.239.28.25:5000/three"
+    let sevenAddress = "http://163.239.28.25:5000/seven"
     let modelKey = "ModelKey"
 
     //MARK: - apple Speech to Text

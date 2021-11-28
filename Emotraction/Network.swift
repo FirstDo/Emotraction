@@ -29,6 +29,20 @@ extension ViewController {
         //userList.append(message)
         messageLabel.text = "아무 말이나 해보세요"
         
+        
+        var address = ""
+        
+        if let value = UserDefaults.standard.value(forKey: modelKey) as? Int {
+            switch value {
+            case 0:
+                address = threeAddress
+            case 1:
+                address = sevenAddress
+            default:
+                break
+            }
+        }
+        
         //서버통신
         guard let url = URL(string: address) else {
             alertView(message: "url이 이상합니다")

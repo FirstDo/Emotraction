@@ -1,21 +1,21 @@
 //
-//  BotTableViewCell.swift
+//  ChatTableViewCell2.swift
 //  Emotraction
 //
-//  Created by 김도연 on 2021/09/23.
+//  Created by 김도연 on 2021/11/28.
 //
 
 import UIKit
 
-class BotTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var botImage: UIImageView!
-    @IBOutlet weak var emotionLabel: UILabel!
+class ChatTableViewCell2: UITableViewCell {
+    
+    @IBOutlet weak var textMessage: UILabel!
+    @IBOutlet weak var emotion: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        botImage.image = UIImage(named: "bot") ?? nil
-        
+        textMessage.numberOfLines = 0
+        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

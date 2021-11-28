@@ -8,15 +8,11 @@
 import UIKit
 
 class ChatTableViewCell: UITableViewCell {
-    @IBOutlet weak var leftImage: UIImageView!
-    @IBOutlet weak var rightImage: UIImageView!
     @IBOutlet weak var textMessage: UILabel!
     @IBOutlet weak var emotion: UILabel!
-    @IBOutlet weak var chatView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        chatView.layer.cornerRadius = 10
         textMessage.numberOfLines = 0
     }
 

@@ -9,7 +9,6 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-
 //json Encoding/Decoding을 위한 구조체
 struct PostData: Codable {
     let text: String

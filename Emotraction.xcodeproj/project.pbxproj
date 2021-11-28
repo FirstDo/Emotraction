@@ -15,15 +15,13 @@
 		945BDC4B26FC8C1200F53841 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC4926FC8C1200F53841 /* Main.storyboard */; };
 		945BDC4D26FC8C1300F53841 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC4C26FC8C1300F53841 /* Assets.xcassets */; };
 		945BDC5026FC8C1300F53841 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC4E26FC8C1300F53841 /* LaunchScreen.storyboard */; };
-		945BDC5C26FC8F1D00F53841 /* MyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945BDC5A26FC8F1D00F53841 /* MyTableViewCell.swift */; };
-		945BDC5D26FC8F1D00F53841 /* MyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC5B26FC8F1D00F53841 /* MyTableViewCell.xib */; };
-		945BDC6226FC8F3700F53841 /* BotTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945BDC6026FC8F3700F53841 /* BotTableViewCell.swift */; };
-		945BDC6326FC8F3700F53841 /* BotTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC6126FC8F3700F53841 /* BotTableViewCell.xib */; };
 		94A0E05C27521807000CC0E4 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0E05A27521807000CC0E4 /* ChatTableViewCell.swift */; };
 		94A0E05D27521807000CC0E4 /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94A0E05B27521807000CC0E4 /* ChatTableViewCell.xib */; };
 		94A0E05F27521AD5000CC0E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94A0E05E27521AD5000CC0E4 /* GoogleService-Info.plist */; };
 		94DE07FB27521E6E00B35172 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DE07FA27521E6E00B35172 /* Model.swift */; };
 		94DE07FD27521F9800B35172 /* PrevViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DE07FC27521F9700B35172 /* PrevViewController.swift */; };
+		94DE0800275385E800B35172 /* ChatTableViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DE07FE275385E800B35172 /* ChatTableViewCell2.swift */; };
+		94DE0801275385E800B35172 /* ChatTableViewCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94DE07FF275385E800B35172 /* ChatTableViewCell2.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,15 +36,13 @@
 		945BDC4C26FC8C1300F53841 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		945BDC4F26FC8C1300F53841 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		945BDC5126FC8C1300F53841 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		945BDC5A26FC8F1D00F53841 /* MyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCell.swift; sourceTree = "<group>"; };
-		945BDC5B26FC8F1D00F53841 /* MyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyTableViewCell.xib; sourceTree = "<group>"; };
-		945BDC6026FC8F3700F53841 /* BotTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotTableViewCell.swift; sourceTree = "<group>"; };
-		945BDC6126FC8F3700F53841 /* BotTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BotTableViewCell.xib; sourceTree = "<group>"; };
 		94A0E05A27521807000CC0E4 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		94A0E05B27521807000CC0E4 /* ChatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
 		94A0E05E27521AD5000CC0E4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		94DE07FA27521E6E00B35172 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		94DE07FC27521F9700B35172 /* PrevViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrevViewController.swift; sourceTree = "<group>"; };
+		94DE07FE275385E800B35172 /* ChatTableViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell2.swift; sourceTree = "<group>"; };
+		94DE07FF275385E800B35172 /* ChatTableViewCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell2.xib; sourceTree = "<group>"; };
 		FCE945F424A3B5113D2EA84A /* Pods-Emotraction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emotraction.debug.xcconfig"; path = "Target Support Files/Pods-Emotraction/Pods-Emotraction.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,12 +98,10 @@
 		945BDC5726FC8EDA00F53841 /* CustomCell */ = {
 			isa = PBXGroup;
 			children = (
-				945BDC5A26FC8F1D00F53841 /* MyTableViewCell.swift */,
-				945BDC5B26FC8F1D00F53841 /* MyTableViewCell.xib */,
-				945BDC6026FC8F3700F53841 /* BotTableViewCell.swift */,
-				945BDC6126FC8F3700F53841 /* BotTableViewCell.xib */,
 				94A0E05A27521807000CC0E4 /* ChatTableViewCell.swift */,
 				94A0E05B27521807000CC0E4 /* ChatTableViewCell.xib */,
+				94DE07FE275385E800B35172 /* ChatTableViewCell2.swift */,
+				94DE07FF275385E800B35172 /* ChatTableViewCell2.xib */,
 			);
 			path = CustomCell;
 			sourceTree = "<group>";
@@ -191,8 +185,7 @@
 			files = (
 				945BDC5026FC8C1300F53841 /* LaunchScreen.storyboard in Resources */,
 				94A0E05D27521807000CC0E4 /* ChatTableViewCell.xib in Resources */,
-				945BDC5D26FC8F1D00F53841 /* MyTableViewCell.xib in Resources */,
-				945BDC6326FC8F3700F53841 /* BotTableViewCell.xib in Resources */,
+				94DE0801275385E800B35172 /* ChatTableViewCell2.xib in Resources */,
 				945BDC4D26FC8C1300F53841 /* Assets.xcassets in Resources */,
 				945BDC4B26FC8C1200F53841 /* Main.storyboard in Resources */,
 				94A0E05F27521AD5000CC0E4 /* GoogleService-Info.plist in Resources */,
@@ -248,10 +241,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94DE0800275385E800B35172 /* ChatTableViewCell2.swift in Sources */,
 				945BDC4826FC8C1200F53841 /* ViewController.swift in Sources */,
-				945BDC5C26FC8F1D00F53841 /* MyTableViewCell.swift in Sources */,
 				943110CE274BC5EF000C87BA /* Network.swift in Sources */,
-				945BDC6226FC8F3700F53841 /* BotTableViewCell.swift in Sources */,
 				94A0E05C27521807000CC0E4 /* ChatTableViewCell.swift in Sources */,
 				945BDC4426FC8C1200F53841 /* AppDelegate.swift in Sources */,
 				945BDC4626FC8C1200F53841 /* SceneDelegate.swift in Sources */,

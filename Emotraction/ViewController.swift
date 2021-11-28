@@ -169,7 +169,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "채팅봇"
+        let user = Auth.auth().currentUser?.email == "usera@gmail.com" ? "A" : "B"
+        title = "채팅 (\(user))"
         loadMessages()
         messageView.layer.cornerRadius = 10
         
@@ -181,15 +182,17 @@ class ViewController: UIViewController {
         sendButton.tintColor = .white
         
         requestPermission()
-
+        
         //tableView setting
         chatTableView.delegate = self
         chatTableView.dataSource = self
         chatTableView.separatorStyle = .none
-        //chatTableView.allowsSelection = false
+        chatTableView.allowsSelection = false
         
         let messageCell = UINib(nibName: "ChatTableViewCell", bundle: nil)
         chatTableView.register(messageCell, forCellReuseIdentifier: "cell")
+        let messageCell2 = UINib(nibName: "ChatTableViewCell2", bundle: nil)
+        chatTableView.register(messageCell2, forCellReuseIdentifier: "cell2")
         
         
         //기본 모델은 3가지 감정분류 모델
@@ -197,7 +200,8 @@ class ViewController: UIViewController {
         alertView(message: "서버에서 NewEmotion.py를 선택해주세요", title: "3가지 감정분류 모델")
     }
     
-    func loadMessages() {
+    //fire cloud 에서 메시지를 가져오는 부분
+    private func loadMessages() {
         let db = Firestore.firestore()
         
         db.collection("messages").order(by: "date").addSnapshotListener { querySnapshot, error in
@@ -213,7 +217,6 @@ class ViewController: UIViewController {
                             self.messageList.append(Message(sender: sender, body: body, emotion: emotion))
                             
                             DispatchQueue.main.async {
-                                print("reloadData")
                                 self.chatTableView.reloadData()
                                 self.scrollToBottom()
                             }
@@ -241,34 +244,24 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ChatTableViewCell else {
-            print("cell ERROR")
-            return UITableViewCell()
-        }
-        
         let target = messageList[indexPath.row]
         
-        //자신의 메시지이면
         if target.sender == Auth.auth().currentUser?.email {
-            cell.leftImage.isHidden = true
-            cell.rightImage.isHidden = false
-            cell.chatView.backgroundColor = .systemYellow
-            cell.textMessage.textAlignment = .left
-            cell.emotion.textAlignment = .left
-        } else {
-            cell.leftImage.isHidden = false
-            cell.rightImage.isHidden = true
-            cell.chatView.backgroundColor = .systemGray6
-            cell.textMessage.textAlignment = .left
-            cell.emotion.textAlignment = .left
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ChatTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.textMessage.text = target.body
+            cell.emotion.text = nil
+            return cell
         }
-        
-        print(cell.textMessage.textAlignment)
-        
-        cell.textMessage.text = target.body
-        cell.emotion.text = target.emotion
-        
-        return cell
+        else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell2", for: indexPath) as? ChatTableViewCell2 else {
+                return UITableViewCell()
+            }
+            cell.textMessage.text = target.body
+            cell.emotion.text = target.emotion
+            return cell
+        }
     }
 }
 

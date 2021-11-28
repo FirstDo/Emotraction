@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		106729C10D42757D8C7D0752 /* Pods_Emotraction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67FB5161FF994A9FDA235AE5 /* Pods_Emotraction.framework */; };
 		943110CE274BC5EF000C87BA /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943110CD274BC5EF000C87BA /* Network.swift */; };
 		945BDC4426FC8C1200F53841 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945BDC4326FC8C1200F53841 /* AppDelegate.swift */; };
 		945BDC4626FC8C1200F53841 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945BDC4526FC8C1200F53841 /* SceneDelegate.swift */; };
@@ -18,9 +19,16 @@
 		945BDC5D26FC8F1D00F53841 /* MyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC5B26FC8F1D00F53841 /* MyTableViewCell.xib */; };
 		945BDC6226FC8F3700F53841 /* BotTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945BDC6026FC8F3700F53841 /* BotTableViewCell.swift */; };
 		945BDC6326FC8F3700F53841 /* BotTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 945BDC6126FC8F3700F53841 /* BotTableViewCell.xib */; };
+		94A0E05C27521807000CC0E4 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0E05A27521807000CC0E4 /* ChatTableViewCell.swift */; };
+		94A0E05D27521807000CC0E4 /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94A0E05B27521807000CC0E4 /* ChatTableViewCell.xib */; };
+		94A0E05F27521AD5000CC0E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94A0E05E27521AD5000CC0E4 /* GoogleService-Info.plist */; };
+		94DE07FB27521E6E00B35172 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DE07FA27521E6E00B35172 /* Model.swift */; };
+		94DE07FD27521F9800B35172 /* PrevViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DE07FC27521F9700B35172 /* PrevViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		67FB5161FF994A9FDA235AE5 /* Pods_Emotraction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emotraction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A4C4823AAFB6FACC0E73396 /* Pods-Emotraction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emotraction.release.xcconfig"; path = "Target Support Files/Pods-Emotraction/Pods-Emotraction.release.xcconfig"; sourceTree = "<group>"; };
 		943110CD274BC5EF000C87BA /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		945BDC4026FC8C1200F53841 /* Emotraction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emotraction.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		945BDC4326FC8C1200F53841 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +42,12 @@
 		945BDC5B26FC8F1D00F53841 /* MyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyTableViewCell.xib; sourceTree = "<group>"; };
 		945BDC6026FC8F3700F53841 /* BotTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotTableViewCell.swift; sourceTree = "<group>"; };
 		945BDC6126FC8F3700F53841 /* BotTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BotTableViewCell.xib; sourceTree = "<group>"; };
+		94A0E05A27521807000CC0E4 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		94A0E05B27521807000CC0E4 /* ChatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
+		94A0E05E27521AD5000CC0E4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		94DE07FA27521E6E00B35172 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		94DE07FC27521F9700B35172 /* PrevViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrevViewController.swift; sourceTree = "<group>"; };
+		FCE945F424A3B5113D2EA84A /* Pods-Emotraction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emotraction.debug.xcconfig"; path = "Target Support Files/Pods-Emotraction/Pods-Emotraction.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				106729C10D42757D8C7D0752 /* Pods_Emotraction.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +67,8 @@
 			children = (
 				945BDC4226FC8C1200F53841 /* Emotraction */,
 				945BDC4126FC8C1200F53841 /* Products */,
+				B311D69294317CF8E34DF5A8 /* Pods */,
+				F98D9085C43223B150C66383 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,12 +85,15 @@
 			children = (
 				945BDC4326FC8C1200F53841 /* AppDelegate.swift */,
 				945BDC4526FC8C1200F53841 /* SceneDelegate.swift */,
+				94DE07FC27521F9700B35172 /* PrevViewController.swift */,
 				945BDC4726FC8C1200F53841 /* ViewController.swift */,
+				94DE07FA27521E6E00B35172 /* Model.swift */,
 				943110CD274BC5EF000C87BA /* Network.swift */,
 				945BDC4926FC8C1200F53841 /* Main.storyboard */,
 				945BDC5726FC8EDA00F53841 /* CustomCell */,
 				945BDC4C26FC8C1300F53841 /* Assets.xcassets */,
 				945BDC4E26FC8C1300F53841 /* LaunchScreen.storyboard */,
+				94A0E05E27521AD5000CC0E4 /* GoogleService-Info.plist */,
 				945BDC5126FC8C1300F53841 /* Info.plist */,
 			);
 			path = Emotraction;
@@ -86,8 +106,27 @@
 				945BDC5B26FC8F1D00F53841 /* MyTableViewCell.xib */,
 				945BDC6026FC8F3700F53841 /* BotTableViewCell.swift */,
 				945BDC6126FC8F3700F53841 /* BotTableViewCell.xib */,
+				94A0E05A27521807000CC0E4 /* ChatTableViewCell.swift */,
+				94A0E05B27521807000CC0E4 /* ChatTableViewCell.xib */,
 			);
 			path = CustomCell;
+			sourceTree = "<group>";
+		};
+		B311D69294317CF8E34DF5A8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FCE945F424A3B5113D2EA84A /* Pods-Emotraction.debug.xcconfig */,
+				7A4C4823AAFB6FACC0E73396 /* Pods-Emotraction.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F98D9085C43223B150C66383 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				67FB5161FF994A9FDA235AE5 /* Pods_Emotraction.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,9 +136,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 945BDC5426FC8C1300F53841 /* Build configuration list for PBXNativeTarget "Emotraction" */;
 			buildPhases = (
+				953E8C444188E3044EA1ECEC /* [CP] Check Pods Manifest.lock */,
 				945BDC3C26FC8C1200F53841 /* Sources */,
 				945BDC3D26FC8C1200F53841 /* Frameworks */,
 				945BDC3E26FC8C1200F53841 /* Resources */,
+				19EA56BBCBAECB172A4A1807 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -149,14 +190,58 @@
 			buildActionMask = 2147483647;
 			files = (
 				945BDC5026FC8C1300F53841 /* LaunchScreen.storyboard in Resources */,
+				94A0E05D27521807000CC0E4 /* ChatTableViewCell.xib in Resources */,
 				945BDC5D26FC8F1D00F53841 /* MyTableViewCell.xib in Resources */,
 				945BDC6326FC8F3700F53841 /* BotTableViewCell.xib in Resources */,
 				945BDC4D26FC8C1300F53841 /* Assets.xcassets in Resources */,
 				945BDC4B26FC8C1200F53841 /* Main.storyboard in Resources */,
+				94A0E05F27521AD5000CC0E4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		19EA56BBCBAECB172A4A1807 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Emotraction/Pods-Emotraction-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Emotraction/Pods-Emotraction-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Emotraction/Pods-Emotraction-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		953E8C444188E3044EA1ECEC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Emotraction-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		945BDC3C26FC8C1200F53841 /* Sources */ = {
@@ -167,8 +252,11 @@
 				945BDC5C26FC8F1D00F53841 /* MyTableViewCell.swift in Sources */,
 				943110CE274BC5EF000C87BA /* Network.swift in Sources */,
 				945BDC6226FC8F3700F53841 /* BotTableViewCell.swift in Sources */,
+				94A0E05C27521807000CC0E4 /* ChatTableViewCell.swift in Sources */,
 				945BDC4426FC8C1200F53841 /* AppDelegate.swift in Sources */,
 				945BDC4626FC8C1200F53841 /* SceneDelegate.swift in Sources */,
+				94DE07FD27521F9800B35172 /* PrevViewController.swift in Sources */,
+				94DE07FB27521E6E00B35172 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +400,7 @@
 		};
 		945BDC5526FC8C1300F53841 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCE945F424A3B5113D2EA84A /* Pods-Emotraction.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -343,6 +432,7 @@
 		};
 		945BDC5626FC8C1300F53841 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A4C4823AAFB6FACC0E73396 /* Pods-Emotraction.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

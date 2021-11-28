@@ -7,6 +7,8 @@
 
 import UIKit
 import Speech
+import FirebaseAuth
+import FirebaseFirestore
 
 class ViewController: UIViewController {
 
@@ -20,13 +22,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var AppleButton: UIButton!
     
     //MARK: - Local Properties
-    var userList = [String]()
-    var botList = [String]()
+//    var userList = [String]()
+//    var botList = [String]()
+    
+    var messageList = [Message]()
     
     let address = "http://163.239.28.25:5000/text"
     let modelKey = "ModelKey"
-    
-    
+
     //MARK: - apple Speech to Text
     let audioEngine = AVAudioEngine()
     let speechReconizer: SFSpeechRecognizer? = SFSpeechRecognizer(locale: Locale(identifier: "ko_KR"))
@@ -148,8 +151,8 @@ class ViewController: UIViewController {
     
     //테이블뷰를 맨 마지막으로 스크롤하는 함수
     func scrollToBottom() {
-        if userList.count > 0 {
-            let lastIndexPath = IndexPath(row: userList.count * 2 - 1, section: 0)
+        if messageList.count > 0 {
+            let lastIndexPath = IndexPath(row: messageList.count - 1, section: 0)
             chatTableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
         }
         
@@ -167,6 +170,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "채팅봇"
+        loadMessages()
         messageView.layer.cornerRadius = 10
         
         AppleButton.tintColor = .black
@@ -184,22 +188,47 @@ class ViewController: UIViewController {
         chatTableView.separatorStyle = .none
         //chatTableView.allowsSelection = false
         
-        let myCell = UINib(nibName: "MyTableViewCell", bundle: nil)
-        let botCell = UINib(nibName: "BotTableViewCell", bundle: nil)
+        let messageCell = UINib(nibName: "ChatTableViewCell", bundle: nil)
+        chatTableView.register(messageCell, forCellReuseIdentifier: "cell")
         
-        chatTableView.register(myCell, forCellReuseIdentifier: "userCell")
-        chatTableView.register(botCell, forCellReuseIdentifier: "botCell")
         
         //기본 모델은 3가지 감정분류 모델
         UserDefaults.standard.set(0, forKey: modelKey)
         alertView(message: "서버에서 NewEmotion.py를 선택해주세요", title: "3가지 감정분류 모델")
+    }
+    
+    func loadMessages() {
+        let db = Firestore.firestore()
+        
+        db.collection("messages").order(by: "date").addSnapshotListener { querySnapshot, error in
+            self.messageList.removeAll()
+            
+            if let e = error {
+                print(e.localizedDescription)
+            } else {
+                if let snapshotDocuments = querySnapshot?.documents {
+                    snapshotDocuments.forEach { doc in
+                        let data = doc.data()
+                        if let sender = data["sender"] as? String, let body = data["body"] as? String, let emotion = data["emotion"] as? String {
+                            self.messageList.append(Message(sender: sender, body: body, emotion: emotion))
+                            
+                            DispatchQueue.main.async {
+                                print("reloadData")
+                                self.chatTableView.reloadData()
+                                self.scrollToBottom()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 //tableViewDelegate
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userList.count * 2
+        return messageList.count
     }
     
     //cell의 동적높이 구현
@@ -212,20 +241,34 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //userCell
-        if indexPath.row % 2 == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! MyTableViewCell
-            cell.selectionStyle = .none
-            cell.messageLabel.text = userList[indexPath.row / 2]
-            return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ChatTableViewCell else {
+            print("cell ERROR")
+            return UITableViewCell()
         }
-        //botCell
-        else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "botCell", for: indexPath) as! BotTableViewCell
-            cell.selectionStyle = .none
-            cell.emotionLabel.text = botList[indexPath.row / 2]
-            return cell
+        
+        let target = messageList[indexPath.row]
+        
+        //자신의 메시지이면
+        if target.sender == Auth.auth().currentUser?.email {
+            cell.leftImage.isHidden = true
+            cell.rightImage.isHidden = false
+            cell.chatView.backgroundColor = .systemYellow
+            cell.textMessage.textAlignment = .left
+            cell.emotion.textAlignment = .left
+        } else {
+            cell.leftImage.isHidden = false
+            cell.rightImage.isHidden = true
+            cell.chatView.backgroundColor = .systemGray6
+            cell.textMessage.textAlignment = .left
+            cell.emotion.textAlignment = .left
         }
+        
+        print(cell.textMessage.textAlignment)
+        
+        cell.textMessage.text = target.body
+        cell.emotion.text = target.emotion
+        
+        return cell
     }
 }
 

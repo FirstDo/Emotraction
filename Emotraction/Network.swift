@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import FirebaseAuth
+import FirebaseFirestore
+
 
 //json Encoding/Decoding을 위한 구조체
 struct PostData: Codable {
@@ -24,7 +27,7 @@ extension ViewController {
             StartOrStop(self)
         }
         
-        userList.append(message)
+        //userList.append(message)
         messageLabel.text = "아무 말이나 해보세요"
         
         //서버통신
@@ -77,11 +80,24 @@ extension ViewController {
                         self.alertView(message: "no Model")
                         return
                     }
-                    self.botList.append(emotion)
-                    DispatchQueue.main.async {
-                        self.chatTableView.reloadData()
-                        self.scrollToBottom()
-                        self.messageLabel.text = "아무 말이나 해보세요"
+                    
+                    //firestore에 유저정보, 메시지, 감정을 저장하기
+                    let db = Firestore.firestore()
+                    let sender = Auth.auth().currentUser?.email
+                    
+                    db.collection("messages").addDocument(data: [
+                        "sender": sender,
+                        "body": message,
+                        "emotion": emotion,
+                        "date": Date().timeIntervalSince1970
+                    ]) { error in
+                        if let e = error {
+                            print(e.localizedDescription)
+                        } else {
+                            DispatchQueue.main.async {
+                                self.messageLabel.text = "아무 말이나 해보세요"
+                            }
+                        }
                     }
                 } catch {
                     self.alertView(message: "data parsing Error")
@@ -128,7 +144,6 @@ extension ViewController {
         }
     }
     
-    //
     func compelxModel2(_ emo: String) -> String{
         return ""
     }

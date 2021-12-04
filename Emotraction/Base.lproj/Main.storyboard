@@ -143,7 +143,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1404" y="72"/>
+            <point key="canvasLocation" x="1430" y="-143"/>
         </scene>
         <!--Prev View Controller-->
         <scene sceneID="4Ui-fE-l1f">
@@ -176,6 +176,9 @@
                                         <rect key="frame" x="0.0" y="122" width="214.5" height="31"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="graph representation(개발중..)"/>
+                                        <connections>
+                                            <segue destination="adW-Fb-84G" kind="show" id="K26-C4-UUj"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -195,6 +198,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Anr-TD-AiN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="612" y="79"/>
+        </scene>
+        <!--Graph View Controller-->
+        <scene sceneID="pSd-7m-iVj">
+            <objects>
+                <viewController id="adW-Fb-84G" customClass="GraphViewController" customModule="Emotraction" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0SY-ei-JA4">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="WUP-oO-91T"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="W86-dh-arD"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KKk-Hp-UDL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1440" y="539"/>
         </scene>
     </scenes>
     <resources>

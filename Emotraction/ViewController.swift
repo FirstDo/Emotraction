@@ -21,10 +21,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var stateLabel: UILabel!
     @IBOutlet weak var AppleButton: UIButton!
     
-    //MARK: - Local Properties
-//    var userList = [String]()
-//    var botList = [String]()
-    
     var messageList = [Message]()
     
     let threeAddress = "http://163.239.28.25:5000/three"
@@ -32,9 +28,13 @@ class ViewController: UIViewController {
     let modelKey = "ModelKey"
 
     //MARK: - apple Speech to Text
+    //소리만을 인식하는 오디오 엔진객체
     let audioEngine = AVAudioEngine()
+    //음성인식기
     let speechReconizer: SFSpeechRecognizer? = SFSpeechRecognizer(locale: Locale(identifier: "ko_KR"))
+    //음성인식요청을 처리하는 객체
     let request = SFSpeechAudioBufferRecognitionRequest()
+    //인식요청결과를 제공하는 객체
     var task: SFSpeechRecognitionTask!
     var isStart: Bool = false
     

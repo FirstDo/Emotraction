@@ -9,9 +9,12 @@ import UIKit
 import Speech
 import FirebaseAuth
 import FirebaseFirestore
+import Charts
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var chartView: HorizontalBarChartView!
+    
     //MARK: - OUTLET
     @IBOutlet weak var messageView: UIView!
     @IBOutlet weak var messageLabel: UILabel!
@@ -23,9 +26,14 @@ class ViewController: UIViewController {
     
     var messageList = [Message]()
     
-    let threeAddress = "http://163.239.28.25:5000/three"
-    let sevenAddress = "http://163.239.28.25:5000/seven"
-    let modelKey = "ModelKey"
+    let simple3 = "http://163.239.28.25:5000/three"
+    let simple7 = "http://163.239.28.25:5000/seven"
+    
+    let multi27 = "http://192.168.0.17:5000/original"
+    let multi7 = "http://192.168.0.17:5000/ekman"
+    let multi3 = "http://192.168.0.17:5000/group"
+    
+
 
     //MARK: - apple Speech to Text
     //소리만을 인식하는 오디오 엔진객체
@@ -39,25 +47,35 @@ class ViewController: UIViewController {
     var isStart: Bool = false
     
     @IBAction func SelectModel(_ sender: UISegmentedControl) {
-        let value = sender.selectedSegmentIndex
-        UserDefaults.standard.set(value, forKey: modelKey)
+         modelIndex = sender.selectedSegmentIndex
         
         var modelName = ""
         var message = ""
         
-        switch value {
+        switch modelIndex {
         case 0:
-            modelName = "3가지 감정분류 모델"
+            modelName = "3가지 단일 감정분류 모델"
             message = "서버에서 NewEmotion.py 를 실행해주세요"
+            networkAddress = simple3
         case 1:
-            modelName = "7가지 감정분류 모델"
+            modelName = "7가지 단일 감정분류 모델"
             message = "서버에서 TestEmotion.py 를 실행해주세요"
+            networkAddress = simple7
         case 2:
-            modelName = "개발중..."
-            message = "다른 모델을 선택해주세요"
+            modelName = "3가지 다중 감정분류 모델"
+            message = "서버에서.. "
+            networkAddress = multi3
+        case 3:
+            modelName = "7가지 다중 감정분류 모델"
+            message = "서버에서.. "
+            networkAddress = multi7
+            
+        case 4:
+            modelName = "27가지 다중 감정분류 모델"
+            message = "서버에서.. "
+            networkAddress = multi27
         default:
-            modelName = "개발중..."
-            message = "다른 모델을 선택해주세요"
+            break
         }
         alertView(message: message, title: modelName)
     }
@@ -67,14 +85,18 @@ class ViewController: UIViewController {
         isStart = !isStart
         
         if isStart {
-            stateLabel.text = "Recording..."
-            stateLabel.textColor = .systemRed
-            AppleButton.tintColor = .systemRed
+            DispatchQueue.main.async {
+                self.stateLabel.text = "Recording..."
+                self.stateLabel.textColor = .systemRed
+                self.AppleButton.tintColor = .systemRed
+            }
             startSpeechRecognization()
         } else {
-            stateLabel.text = "Waiting..."
-            stateLabel.textColor = .black
-            AppleButton.tintColor = .black
+            DispatchQueue.main.async {
+                self.stateLabel.text = "Waiting..."
+                self.stateLabel.textColor = .black
+                self.AppleButton.tintColor = .black
+            }
             cancelSpeechRecognization()
         }
     }
@@ -165,7 +187,13 @@ class ViewController: UIViewController {
             alertView(message: "보낼 메시지가 없습니다")
             return
         }
-        send(message: message)
+        
+        if (2...4).contains(modelIndex) {
+            print("다중감정 모델! 영어번역이 필요하다.")
+            callPapago(message)
+        } else {
+            send(message: message)
+        }
     }
     
     override func viewDidLoad() {
@@ -197,8 +225,15 @@ class ViewController: UIViewController {
         
         
         //기본 모델은 3가지 감정분류 모델
-        UserDefaults.standard.set(0, forKey: modelKey)
+        networkAddress = simple3
         alertView(message: "서버에서 NewEmotion.py를 선택해주세요", title: "3가지 감정분류 모델")
+        
+        //chartView
+        
+        
+        chartView.noDataText = "감정 데이터가 없습니다"
+        chartView.noDataFont = .systemFont(ofSize: 20)
+        chartView.noDataTextColor = .lightGray
     }
     
     //fire cloud 에서 메시지를 가져오는 부분
@@ -214,18 +249,112 @@ class ViewController: UIViewController {
                 if let snapshotDocuments = querySnapshot?.documents {
                     snapshotDocuments.forEach { doc in
                         let data = doc.data()
-                        if let sender = data["sender"] as? String, let body = data["body"] as? String, let emotion = data["emotion"] as? String {
-                            self.messageList.append(Message(sender: sender, body: body, emotion: emotion))
-                            
-                            DispatchQueue.main.async {
-                                self.chatTableView.reloadData()
-                                self.scrollToBottom()
-                            }
+                        if let sender = data["sender"] as? String, let body = data["body"] as? String, let emotion = data["emotion"] as? [String], let score = data["score"] as? [Double] {
+                            self.messageList.append(Message(sender: sender, body: body, emotion: emotion, score: score))
+
                         }
+                    }
+                    
+                    
+                    if let target = self.messageList.filter({$0.sender != Auth.auth().currentUser?.email}).last {
+                        print(target, "내 메시지가 아닌것만 뽑아오자")
+                        let emotionList = target.emotion
+                        let unitScore = target.score.map{100*$0}
+                        
+                        self.setChart(dataPoints: emotionList, values: unitScore)
+                    }
+                               
+                    DispatchQueue.main.async {
+                        self.chatTableView.reloadData()
+                        self.scrollToBottom()
                     }
                 }
             }
         }
+    }
+    
+    //drawChart
+    func setChart(dataPoints: [String], values: [Double]) {
+        var dataEntries: [BarChartDataEntry] = []
+
+        for i in 0..<dataPoints.count {
+            let dataEntry = BarChartDataEntry(x: Double(i), y: values[i])
+            dataEntries.append(dataEntry)
+        }
+
+        let chartDataSet = BarChartDataSet(entries: dataEntries, label: "")
+        chartDataSet.colors = ChartColorTemplates.joyful()
+        
+        let chartData = BarChartData(dataSet: chartDataSet)
+        chartView.data = chartData
+
+        
+        //xAxis
+        let xAxis = chartView.xAxis
+        
+        xAxis.drawGridLinesEnabled = false
+        xAxis.labelPosition = .bottomInside
+        
+        
+
+        xAxis.centerAxisLabelsEnabled = false
+        xAxis.granularity = 1
+        xAxis.granularityEnabled = true
+        xAxis.valueFormatter = IndexAxisValueFormatter(values: dataPoints)
+        
+        chartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+
+        xAxis.setLabelCount(dataPoints.count, force: false)
+        xAxis.labelFont = .systemFont(ofSize: 20)
+       
+        chartView.rightAxis.enabled = false
+        chartView.doubleTapToZoomEnabled = false
+        
+        chartView.leftAxis.axisMinimum = 0
+        //chartView.leftAxis.axisMaximum = values.first! + 10
+        
+ 
+    }
+    
+    //call Papago
+    func callPapago(_ text: String) {
+        let param = "source=ko&target=en&text=\(text)"
+        let paramData = param.data(using: .utf8)
+        guard let naverURL = URL(string: "https://openapi.naver.com/v1/papago/n2mt") else {
+            alertView(message: "naver URL 생성 실패")
+            return
+        }
+        
+        let clientID = "gTG6myOpwpwExEFvXBrg"
+        let clientSecret = "D1nNT3Otyt"
+        
+        //request
+        var request = URLRequest(url: naverURL)
+        request.httpMethod = "POST"
+        request.addValue(clientID, forHTTPHeaderField: "X-Naver-Client-ID")
+        request.addValue(clientSecret, forHTTPHeaderField: "X-Naver-Client-Secret")
+        request.httpBody = paramData
+        request.setValue(String(paramData!.count), forHTTPHeaderField: "Content-Length")
+        
+        
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        
+        let task = session.dataTask(with: request) { data, response, error in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            if let data = data {
+                let result = try! JSONDecoder().decode(Papago.self, from: data)
+                let translatedMessage = result.message.result.translatedText
+                self.send(message: text, translated: translatedMessage)
+                
+            }
+        }
+        task.resume()
     }
 }
 
@@ -252,7 +381,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
                 return UITableViewCell()
             }
             cell.textMessage.text = target.body
-            cell.emotion.text = nil
+            //cell.emotion.text = nil
             return cell
         }
         else {
@@ -260,7 +389,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
                 return UITableViewCell()
             }
             cell.textMessage.text = target.body
-            cell.emotion.text = target.emotion
+            //cell.emotion.text = target.emotion.joined(separator: " ")
             return cell
         }
     }

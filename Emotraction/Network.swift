@@ -9,90 +9,164 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-//json Encoding/Decoding을 위한 구조체
-struct PostData: Codable {
-    let text: String
+var modelIndex: Int = 0
+var networkAddress = ""
+
+//단일 감정 데이터를 만드는 테스트 코드
+func makeSimpleData() -> Data{
+    let encoder = JSONEncoder()
+    let simpleEmotion = EmotionData(emotion: "happy")
+    let simpleJson = try! encoder.encode(simpleEmotion)
+    
+    return simpleJson
 }
 
-struct EmotionData: Codable {
-    let emotion: String
+func makeMultiData() -> Data {
+    let encoder = JSONEncoder()
+    let multiEmotion = MultiEmotion(labels: ["anger", "happy", "annoyance"], scores: [0.4,0.35, 0.25])
+    let multiJson = try! encoder.encode(multiEmotion)
+    
+    return multiJson
 }
+
 
 extension ViewController {
-    //send 함수
-    func send(message: String) {
-        
-        if isStart == true {
-            StartOrStop(self)
+    //테스트를 위한 코드
+    func noNetworkTest(message: String) {
+        let data: Data!
+        if (0...1).contains(modelIndex) {
+            data = makeSimpleData()
+        } else {
+            data = makeMultiData()
         }
-        
-        //userList.append(message)
-        messageLabel.text = "아무 말이나 해보세요"
-        
-        
-        var address = ""
-        
-        if let value = UserDefaults.standard.value(forKey: modelKey) as? Int {
-            switch value {
-            case 0:
-                address = threeAddress
-            case 1:
-                address = sevenAddress
-            default:
-                break
+
+        do {
+            var emotion = [String]()
+            var score = [Double]()
+            
+            //단일감정일 경우
+            if (0...1).contains(modelIndex) {
+                let resultEmotion = try JSONDecoder().decode(EmotionData.self, from: data)
+                score.append(1)
+                emotion.append(resultEmotion.emotion)
             }
+            //다중감정일 경우
+            else {
+                let resultEmotion = try JSONDecoder().decode(MultiEmotion.self, from: data)
+                score = resultEmotion.scores
+                emotion = resultEmotion.labels
+            }
+            
+            
+            //firestore에 유저정보, 메시지, 감정을 저장하기
+            let db = Firestore.firestore()
+            let sender = Auth.auth().currentUser?.email
+            
+            db.collection("messages").addDocument(data: [
+                "sender": sender,
+                "body": message,
+                "score": score,
+                "emotion": emotion,
+                "date": Date().timeIntervalSince1970
+            ]) { error in
+                if let e = error {
+                    print(e.localizedDescription)
+                } else {
+                    DispatchQueue.main.async {
+                        self.messageLabel.text = "아무 말이나 해보세요"
+                    }
+                }
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.alertView(message: "network Error")
+            }
+            return
         }
+        
+    }
+    
+    //send 함수
+    func send(message: String, translated: String? = nil) {
+        if isStart == true { StartOrStop(self) }
+        
+        DispatchQueue.main.async {
+            self.messageLabel.text = "아무 말이나 해보세요"
+        }
+        
+        print(networkAddress, " 에 요청을 보내자!")
+        //네트워크 없이 더미데이터로 수행하는 테스트코드입니다
+        
+        //from
+        noNetworkTest(message: message)
+        return
+        //to 주석처리하고 테스트해주세요
         
         //서버통신
-        guard let url = URL(string: address) else {
-            alertView(message: "url이 이상합니다")
-            return
+        guard let url = URL(string: networkAddress) else {
+            DispatchQueue.main.async {
+                self.alertView(message: "network Error")
+                return
+            }
         }
         
         var request = URLRequest(url: url)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         
-        let messageData = PostData(text: message)
+        let messageData: PostData!
+        
+        if translated == nil {
+            messageData = PostData(text: message)
+        } else {
+            messageData = PostData(text: translated!)
+        }
+        
         let jsonData = try? JSONEncoder().encode(messageData)
         
         request.httpBody = jsonData
         
         //url task
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let _ = error {
-                self.alertView(message: "network Error")
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.alertView(message: error.localizedDescription)
+                }
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse else {
-                self.alertView(message: "httpResponse Error")
+                DispatchQueue.main.async {
+                    self.alertView(message: "response error")
+                }
                 return
             }
             
             guard (200...299).contains(httpResponse.statusCode) else {
-                self.alertView(message: "httpStatusCode \(httpResponse.statusCode)")
+                DispatchQueue.main.async {
+                    self.alertView(message: "\(httpResponse.statusCode)")
+                }
                 return
             }
             
             if let data = data {
                 do {
-                    let resultEmotion = try JSONDecoder().decode(EmotionData.self, from: data)
-                    let model = UserDefaults.standard.value(forKey: self.modelKey) as? Int ?? 0
-                    var emotion = ""
+                    var emotion = [String]()
+                    var score = [Double]()
                     
-                    switch model {
-                    case 0:
-                        emotion = self.simpleModel(resultEmotion.emotion)
-                    case 1:
-                        emotion = self.complexModel(resultEmotion.emotion)
-                    case 2:
-                        self.alertView(message: "아직 준비되지 않은 모델입니다")
-                        return
-                    default:
-                        self.alertView(message: "no Model")
-                        return
+                    //단일감정일 경우
+                    if (0...1).contains(modelIndex) {
+                        let resultEmotion = try JSONDecoder().decode(EmotionData.self, from: data)
+                        score.append(1)
+                        emotion.append(resultEmotion.emotion)
                     }
+                    //다중감정일 경우
+                    else {
+                        let resultEmotion = try JSONDecoder().decode(MultiEmotion.self, from: data)
+                        score = resultEmotion.scores
+                        emotion = resultEmotion.labels
+                    }
+                    
                     
                     //firestore에 유저정보, 메시지, 감정을 저장하기
                     let db = Firestore.firestore()
@@ -101,6 +175,7 @@ extension ViewController {
                     db.collection("messages").addDocument(data: [
                         "sender": sender,
                         "body": message,
+                        "score": score,
                         "emotion": emotion,
                         "date": Date().timeIntervalSince1970
                     ]) { error in
@@ -113,7 +188,9 @@ extension ViewController {
                         }
                     }
                 } catch {
-                    self.alertView(message: "data parsing Error")
+                    DispatchQueue.main.async {
+                        self.alertView(message: "network Error")
+                    }
                     return
                 }
             }
@@ -121,43 +198,4 @@ extension ViewController {
         task.resume()
     }
     
-    //3가지 감정분류 모델
-    func simpleModel(_ emo: String) -> String{
-        switch emo {
-        case "positive":
-            return "😄"
-        case "neutral":
-            return "😑"
-        case "negative":
-            return "☹️"
-        default:
-            return "🌀"
-        }
-    }
-    
-    //7가지 감정분류 모델
-    func complexModel(_ emo: String) -> String{
-        switch emo {
-        case "fear":
-            return "😱"
-        case "surprised":
-            return "😮"
-        case "angry":
-            return "🤬"
-        case "sad":
-            return "😢"
-        case "neutral":
-            return "😑"
-        case "happy":
-            return "😁"
-        case "disgust":
-            return "🤮"
-        default:
-            return "🌀"
-        }
-    }
-    
-    func compelxModel2(_ emo: String) -> String{
-        return ""
-    }
 }

@@ -22,7 +22,6 @@
 		94DE07FD27521F9800B35172 /* PrevViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DE07FC27521F9700B35172 /* PrevViewController.swift */; };
 		94DE0800275385E800B35172 /* ChatTableViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DE07FE275385E800B35172 /* ChatTableViewCell2.swift */; };
 		94DE0801275385E800B35172 /* ChatTableViewCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94DE07FF275385E800B35172 /* ChatTableViewCell2.xib */; };
-		94DE0809275B9BA900B35172 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DE0808275B9BA900B35172 /* GraphViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +43,6 @@
 		94DE07FC27521F9700B35172 /* PrevViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrevViewController.swift; sourceTree = "<group>"; };
 		94DE07FE275385E800B35172 /* ChatTableViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell2.swift; sourceTree = "<group>"; };
 		94DE07FF275385E800B35172 /* ChatTableViewCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell2.xib; sourceTree = "<group>"; };
-		94DE0808275B9BA900B35172 /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		FCE945F424A3B5113D2EA84A /* Pods-Emotraction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emotraction.debug.xcconfig"; path = "Target Support Files/Pods-Emotraction/Pods-Emotraction.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,7 +91,6 @@
 				945BDC4E26FC8C1300F53841 /* LaunchScreen.storyboard */,
 				94A0E05E27521AD5000CC0E4 /* GoogleService-Info.plist */,
 				945BDC5126FC8C1300F53841 /* Info.plist */,
-				94DE0808275B9BA900B35172 /* GraphViewController.swift */,
 			);
 			path = Emotraction;
 			sourceTree = "<group>";
@@ -244,7 +241,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94DE0809275B9BA900B35172 /* GraphViewController.swift in Sources */,
 				94DE0800275385E800B35172 /* ChatTableViewCell2.swift in Sources */,
 				945BDC4826FC8C1200F53841 /* ViewController.swift in Sources */,
 				943110CE274BC5EF000C87BA /* Network.swift in Sources */,

@@ -258,7 +258,7 @@ class ViewController: UIViewController {
                     
                     if let target = self.messageList.filter({$0.sender != Auth.auth().currentUser?.email}).last {
                         print(target, "내 메시지가 아닌것만 뽑아오자")
-                        let emotionList = target.emotion
+                        let emotionList = target.emotion.map{emotionDict[$0]!}
                         let unitScore = target.score.map{100*$0}
                         
                         self.setChart(dataPoints: emotionList, values: unitScore)
@@ -295,8 +295,6 @@ class ViewController: UIViewController {
         xAxis.drawGridLinesEnabled = false
         xAxis.labelPosition = .bottomInside
         
-        
-
         xAxis.centerAxisLabelsEnabled = false
         xAxis.granularity = 1
         xAxis.granularityEnabled = true
@@ -381,7 +379,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
                 return UITableViewCell()
             }
             cell.textMessage.text = target.body
-            //cell.emotion.text = nil
+            cell.emotion.text = nil
             return cell
         }
         else {
@@ -389,7 +387,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
                 return UITableViewCell()
             }
             cell.textMessage.text = target.body
-            //cell.emotion.text = target.emotion.joined(separator: " ")
+            cell.emotion.text = nil
             return cell
         }
     }

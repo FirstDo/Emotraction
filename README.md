@@ -33,5 +33,9 @@ Swift
 3. 결과감정값을 서버에 저장하고, FirebaseCloud에 업로드
 4. FirebaseCloud에 있는 데이터를 화면에 표시
 
-### 왼쪽(단일감정값을 추출하는 KoBert 모델) 오른쪽
-![EmotractionResult](https://user-images.githubusercontent.com/69573768/147467617-d9470584-537b-44d6-a0e1-71a2a1b8e045.gif)
+#### 동작 모습
+- 왼쪽: Kobert 모델을 사용한 단일감정값을 추출
+- 오른쪽: Bert 모델을 사용한 다중감정값을 추출
+
+https://user-images.githubusercontent.com/69573768/147467726-5762b709-e3b6-4ddb-b967-cda6a61f1e62.mp4
+

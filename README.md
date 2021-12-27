@@ -8,11 +8,11 @@ Emotraction Project의 Client Github
 클라이언트 Github(현재 페이지): [EmotractionApp](https://github.com/FirstDo/Emotraction)
 
 ## Team Emotraction
-### 구성원
+#### 구성원
 팀장: 강주형<br>
 팀원: 신나현, 조보현, 김도연
 
-### 역할
+#### 역할
 - 서버: 신나현<br>
 - ML모델개발: 조보현, 강주형<br>
 - 클라이언트(iOS App): 김도연<br>
@@ -27,7 +27,7 @@ Swift
 - Chart
 - Firebase(Auth, FireStore)
 
-### 앱 작동 순서 
+## 앱 작동 순서 
 1. 입력된 음성을 텍스트로 변환(Speech framework 사용) + (영어 모델을 사용했을 경우, Naver Papago api를 이용해서 번역)
 2. 변환된 텍스트를 포함해서 서버에 POST 요청을 보내고 결과감정값을 얻음
 3. 결과감정값을 서버에 저장하고, Firestore Database에 업로드

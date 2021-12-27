@@ -30,8 +30,8 @@ Swift
 ### 앱 작동 순서 
 1. 입력된 음성을 텍스트로 변환(Speech framework 사용) + (영어 모델을 사용했을 경우, Naver Papago api를 이용해서 번역)
 2. 변환된 텍스트를 포함해서 서버에 POST 요청을 보내고 결과감정값을 얻음
-3. 결과감정값을 서버에 저장하고, FirebaseCloud에 업로드
-4. FirebaseCloud에 있는 데이터를 화면에 표시
+3. 결과감정값을 서버에 저장하고, Firestore Database에 업로드
+4. Firestore Database에 있는 데이터를 화면에 표시
 
 #### 동작 모습
 - 왼쪽: Kobert 모델을 사용한 단일감정값을 추출

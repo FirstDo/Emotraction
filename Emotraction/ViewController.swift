@@ -258,6 +258,7 @@ class ViewController: UIViewController {
                     
                     if let target = self.messageList.filter({$0.sender != Auth.auth().currentUser?.email}).last {
                         print(target, "내 메시지가 아닌것만 뽑아오자")
+                        
                         let emotionList = target.emotion.map{emotionDict[$0]!}
                         let unitScore = target.score.map{100*$0}
                         
